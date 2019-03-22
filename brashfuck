@@ -17,9 +17,8 @@ for (( index = 0; index < ${#program}; index++ )); do
 			printf %b "\x$hex"
 			;;
 		',')
-			IFS= read -rsn 1 input
+			IFS= read -rn 1 input
 			[[ $input == $'\04' ]] && exit
-			printf %s "$input"
 			printf -v 'tape[ptr]' %d "'$input"
 			;;
 		'>')
@@ -32,7 +31,7 @@ for (( index = 0; index < ${#program}; index++ )); do
 			if (( tape[ptr] )); then
 				stack+=("$index")
 			else
-				for (( depth = 0;; index++ )); do
+				for (( depth = 1; depth > 0 && index++; )); do
 					case ${program:index:1} in
 						'[')
 							(( depth++ ))
@@ -41,15 +40,20 @@ for (( index = 0; index < ${#program}; index++ )); do
 							(( depth-- ))
 							;;
 					esac
-					(( depth == 0 )) && {
-						(( index++ ))
-						break
+
+					(( index >= ${#program} )) && {
+						printf "Error: Unmatched opening bracket"
+						exit 1
 					}
 				done
 			fi
 
 			;;
 		']')
+			(( ${#stack[@]} == 0 )) && {
+				printf "Error: Unmatched closing bracket"
+				exit 1
+			}
 			(( tape[ptr] )) && (( index = stack[-1] - 1 ))
 			unset 'stack[-1]'
 			;;
