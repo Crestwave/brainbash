@@ -18,8 +18,8 @@ else
 fi
 
 program=${program//[^'><+-.,[]']}
-
 declare -A tape
+
 for (( ptr = 0; index < ${#program}; index++ )); do
 	case ${program:index:1} in
 		'>')
