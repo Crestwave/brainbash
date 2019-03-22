@@ -6,8 +6,12 @@ die()
 	exit 1
 }
 
-if [[ -f $1 ]]; then
-	program=$(<"$1")
+if (( $# )); then
+	if [[ -f $1 ]]; then
+		program=$(<"$1")
+	else
+		die "$1 is not a regular file"
+	fi
 else
 	mapfile -t
 	program=${MAPFILE[*]}
