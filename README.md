@@ -15,5 +15,5 @@ A brainfuck interpreter in pure Bash
 - Cells wrap on overflow and underflow
 - The cell is left unchanged on EOF
 - The host's native character set is used (untested)
-- Negative pointers are allowed 
+- Negative pointers are allowed
 - Input is line buffered
