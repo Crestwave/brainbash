@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#set -x
+
+program=$(<"${1:-/dev/stdin}")
+program=${program//[^'><+-.,[]']}
+
+for (( index = 0; index < ${#program}; index++ )); do
+	case ${program:index:1} in
+		'+')
+			(( tape[ptr]++ ))
+			;;
+		'-')
+			(( tape[ptr]-- ))
+			;;
+		'.')
+			printf -v hex %x "${tape[ptr]}"
+			printf %b "\x$hex"
+			;;
+		',')
+			IFS= read -rsn 1 input
+			[[ $input == $'\04' ]] && exit
+			printf %s "$input"
+			printf -v 'tape[ptr]' %d "'$input"
+			;;
+		'>')
+			(( ptr++ ))
+			;;
+		'<')
+			(( ptr > 0 && ptr-- ))
+			;;
+		'[')
+			if (( tape[ptr] )); then
+				stack+=("$index")
+			else
+				for (( depth = 0;; index++ )); do
+					case ${program:index:1} in
+						'[')
+							(( depth++ ))
+							;;
+						']')
+							(( depth-- ))
+							;;
+					esac
+					(( depth == 0 )) && {
+						(( index++ ))
+						break
+					}
+				done
+			fi
+
+			;;
+		']')
+			(( tape[ptr] )) && (( index = stack[-1] - 1 ))
+			unset 'stack[-1]'
+			;;
+	esac
+done
