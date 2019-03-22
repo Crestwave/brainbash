@@ -20,9 +20,9 @@ $ brainbash examples/numwarp.b
 	- If there are no arguments:
 		1. It reads from standard input
 		2. If `/dev/tty` is available, `,` reads from it instead
-- It depends on Bash 4+
+- It only depends on Bash 4+ and is designed to be portable
 - It does not optimize on specific patterns
-- Unmatched brackets are detected during runtime for speed
+- Unmatched brackets are only detected during runtime for speed
 
 ## Implementation Info
 
