@@ -3,9 +3,8 @@
 A fully-featured brainfuck interpreter in pure Bash
 
 ```bash
-$ brainbash examples/numwarp.bf
+$ brainbash examples/numwarp.b
 123
-
     /\
      /\
   /\  /
