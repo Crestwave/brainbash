@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+die()
+{
+	printf '\e[31merror:\e[m %s\n' "$@" >&2
+	exit 1
+}
+
 if (( $# )); then
 	program=$(<"$1")
 else
@@ -9,23 +15,26 @@ fi
 
 program=${program//[^'><+-.,[]']}
 
-for (( index = 0; index < ${#program}; index++ )); do
+declare -A tape
+for (( ptr = 0; index < ${#program}; index++ )); do
 	case ${program:index:1} in
 		'>')
 			(( ptr++ ))
 			;;
 		'<')
-			(( ptr > 0 && ptr-- ))
+			(( ptr-- ))
 			;;
 		'+')
-			(( tape[ptr]++ ))
+			(( tape[$ptr]++ ))
+			(( tape[$ptr] > 255 )) && tape[$ptr]=0
 			;;
 		'-')
-			(( tape[ptr]-- ))
+			(( tape[$ptr]-- ))
+			(( tape[$ptr] < 0 )) && tape[$ptr]=255
 			;;
 		'.')
-			printf -v hex %x "${tape[ptr]}"
-			printf %b "\x$hex"
+			printf -v val %o "${tape[$ptr]}"
+			printf %b "\\$val"
 			;;
 		',')
 			[[ -z $input ]] && {
@@ -34,11 +43,11 @@ for (( index = 0; index < ${#program}; index++ )); do
 				input+=${MAPFILE[0]}
 			}
 
-			printf -v 'tape[ptr]' %d "'${input::1}"
+			LC_CTYPE=C printf -v "tape[$ptr]" %d "'${input::1}"
 			input=${input#?}
 			;;
 		'[')
-			if (( tape[ptr] )); then
+			if (( tape[$ptr] )); then
 				stack+=("$index")
 			else
 				for (( depth = 1; depth > 0 && ++index; )); do
@@ -51,21 +60,14 @@ for (( index = 0; index < ${#program}; index++ )); do
 							;;
 					esac
 
-					(( index >= ${#program} )) && {
-						printf "Error: Unmatched opening bracket\n"
-						exit 1
-					}
+					(( index >= ${#program} )) && die "unmatched opening bracket"
 				done
 			fi
-
 			;;
 		']')
-			(( ${#stack[@]} == 0 )) && {
-				printf "Error: Unmatched closing bracket\n"
-				exit 1
-			}
+			(( ${#stack[@]} )) || die "unmatched closing bracket"
 
-			(( tape[ptr] )) && (( index = stack[-1] - 1 ))
+			(( tape[$ptr] )) && (( index = stack[-1] - 1 ))
 			unset 'stack[-1]'
 			;;
 	esac
