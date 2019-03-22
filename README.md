@@ -23,6 +23,7 @@ $ brainbash examples/numwarp.bf
 		2. If `/dev/tty` is available, `,` reads from it instead
 - It depends on Bash 4+
 - It does not optimize on specific patterns
+- Unmatched brackets are detected during runtime for speed
 
 ## Implementation Info
 

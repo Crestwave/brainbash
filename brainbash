@@ -60,20 +60,17 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 					case ${program:index:1} in
 						'[') (( depth++ )) ;;
 						']') (( depth-- )) ;;
-						'') die \
-							"unmatched" \
-							"opening" \
-							"bracket"
-						;;
+						'') die "unmatched [" ;;
 					esac
 				done
 			fi
 			;;
 		']')
-			(( ${#stack[@]} )) || die "unmatched closing bracket"
+			(( ${#stack[@]} )) || die "unmatched ]"
 
 			(( tape[$ptr] )) && (( index = stack[-1] - 1 ))
 			unset 'stack[-1]'
 			;;
 	esac
 done
+(( ${#stack[@]} )) && die "unmatched ["
