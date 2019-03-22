@@ -42,13 +42,14 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 			;;
 		',')
 			[[ -z $input ]] && {
-				mapfile -n 1 </dev/tty
-				[[ -z ${MAPFILE[0]+x} ]] && exit
+				mapfile -n 1
 				input+=${MAPFILE[0]}
 			}
 
-			LC_CTYPE=C printf -v "tape[$ptr]" %d "'${input::1}"
-			input=${input#?}
+			[[ -n ${MAPFILE[0]+x} ]] && {
+				printf -v "tape[$ptr]" %d "'${input::1}"
+				input=${input#?}
+			}
 			;;
 		'[')
 			if (( tape[$ptr] )); then
