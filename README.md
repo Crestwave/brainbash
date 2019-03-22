@@ -1,12 +1,27 @@
 # brainbash
 
-A brainfuck interpreter in pure Bash
+A fully-featured brainfuck interpreter in pure Bash
+
+```bash
+$ brainbash examples/numwarp.bf
+123
+
+    /\
+     /\
+  /\  /
+   / 
+ \ \/
+  \
+   
+```
 
 ## Program Info
 
 - It reads from a file named in the first argument
-	- If there are no arguments, it reads from standard input
-- It only depends on Bash 4+ and is designed to be portable
+	- If there are no arguments:
+		- It reads from standard input
+		- If `/dev/tty` is available, `,` reads from it instead
+- It depends on Bash 4+
 - It does not optimize on specific patterns
 
 ## Implementation Info

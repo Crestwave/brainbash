@@ -15,6 +15,7 @@ if (( $# )); then
 else
 	mapfile -t
 	program=${MAPFILE[*]}
+	[[ -c /dev/tty ]] && exec </dev/tty
 fi
 
 program=${program//[^'><+-.,[]']}
