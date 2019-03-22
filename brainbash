@@ -7,7 +7,7 @@ die()
 }
 
 if (( $# )); then
-	if [[ -f $1 ]]; then
+	if [[ -e $1 ]]; then
 		program=$(<"$1")
 	else
 		die "$1 is not a regular file"
@@ -37,8 +37,8 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 			(( tape[$ptr] < 0 )) && tape[$ptr]=255
 			;;
 		'.')
-			printf -v val %o "${tape[$ptr]}"
-			printf %b "\\$val"
+			printf -v hex %x "${tape[$ptr]}"
+			printf %b "\x$hex"
 			;;
 		',')
 			[[ -z $input ]] && {
