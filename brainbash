@@ -57,18 +57,13 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 			else
 				for (( depth = 1; depth > 0 && ++index; )); do
 					case ${program:index:1} in
-						'[')
-							(( depth++ ))
-							;;
-						']')
-							(( depth-- ))
-							;;
-						'')
-							die \
-								"unmatched" \
-								"opening" \
-								"bracket"
-							;;
+						'[') (( depth++ )) ;;
+						']') (( depth-- )) ;;
+						'') die \
+							"unmatched" \
+							"opening" \
+							"bracket"
+						;;
 					esac
 				done
 			fi
