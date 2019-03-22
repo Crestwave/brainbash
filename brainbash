@@ -6,7 +6,7 @@ die()
 	exit 1
 }
 
-if (( $# )); then
+if [[ -f $1 ]]; then
 	program=$(<"$1")
 else
 	mapfile -t
