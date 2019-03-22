@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 #set -x
 
-program=$(<"${1:-/dev/stdin}")
+if (( $# )); then
+	program=$(<"$1")
+else
+	mapfile -t
+	program=${MAPFILE[*]}
+fi
+
 program=${program//[^'><+-.,[]']}
 
 for (( index = 0; index < ${#program}; index++ )); do
 	case ${program:index:1} in
+		'>')
+			(( ptr++ ))
+			;;
+		'<')
+			(( ptr > 0 && ptr-- ))
+			;;
 		'+')
 			(( tape[ptr]++ ))
 			;;
@@ -17,15 +29,14 @@ for (( index = 0; index < ${#program}; index++ )); do
 			printf %b "\x$hex"
 			;;
 		',')
-			IFS= read -rn 1 input
-			[[ $input == $'\04' ]] && exit
-			printf -v 'tape[ptr]' %d "'$input"
-			;;
-		'>')
-			(( ptr++ ))
-			;;
-		'<')
-			(( ptr > 0 && ptr-- ))
+			[[ -z $input ]] && {
+				mapfile -n 1
+				[[ -z ${MAPFILE[0]+x} ]] && exit
+				input+=${MAPFILE[0]}
+			}
+
+			printf -v 'tape[ptr]' %d "'${input::1}"
+			input=${input#?}
 			;;
 		'[')
 			if (( tape[ptr] )); then
