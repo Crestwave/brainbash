@@ -63,9 +63,10 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 						']')
 							(( depth-- ))
 							;;
+						'')
+							die "unmatched opening bracket"
+							;;
 					esac
-
-					(( index >= ${#program} )) && die "unmatched opening bracket"
 				done
 			fi
 			;;
