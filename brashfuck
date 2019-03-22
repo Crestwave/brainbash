@@ -31,7 +31,7 @@ for (( index = 0; index < ${#program}; index++ )); do
 			if (( tape[ptr] )); then
 				stack+=("$index")
 			else
-				for (( depth = 1; depth > 0 && index++; )); do
+				for (( depth = 1; depth > 0 && ++index; )); do
 					case ${program:index:1} in
 						'[')
 							(( depth++ ))
@@ -42,7 +42,7 @@ for (( index = 0; index < ${#program}; index++ )); do
 					esac
 
 					(( index >= ${#program} )) && {
-						printf "Error: Unmatched opening bracket"
+						printf "Error: Unmatched opening bracket\n"
 						exit 1
 					}
 				done
@@ -51,9 +51,10 @@ for (( index = 0; index < ${#program}; index++ )); do
 			;;
 		']')
 			(( ${#stack[@]} == 0 )) && {
-				printf "Error: Unmatched closing bracket"
+				printf "Error: Unmatched closing bracket\n"
 				exit 1
 			}
+
 			(( tape[ptr] )) && (( index = stack[-1] - 1 ))
 			unset 'stack[-1]'
 			;;
