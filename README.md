@@ -19,8 +19,8 @@ $ brainbash examples/numwarp.bf
 
 - It reads from a file named in the first argument
 	- If there are no arguments:
-		- It reads from standard input
-		- If `/dev/tty` is available, `,` reads from it instead
+		1. It reads from standard input
+		2. If `/dev/tty` is available, `,` reads from it instead
 - It depends on Bash 4+
 - It does not optimize on specific patterns
 
