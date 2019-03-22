@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#set -x
 
 if (( $# )); then
 	program=$(<"$1")
@@ -30,7 +29,7 @@ for (( index = 0; index < ${#program}; index++ )); do
 			;;
 		',')
 			[[ -z $input ]] && {
-				mapfile -n 1
+				mapfile -n 1 </dev/tty
 				[[ -z ${MAPFILE[0]+x} ]] && exit
 				input+=${MAPFILE[0]}
 			}
