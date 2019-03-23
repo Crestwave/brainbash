@@ -2,7 +2,7 @@
 
 A brainfuck interpreter written in pure Bash
 
-```bash
+```shell
 $ brainbash examples/numwarp.b
 123
     /\
