@@ -6,12 +6,15 @@ die()
 	exit 1
 }
 
-(( $# )) || set /dev/tty
-
-if [[ -e $1 ]]; then
-	program=$(<"$1")
+if (( $# )); then
+	if [[ -e $1 ]]; then
+		program=$(<"$1")
+	else
+		die "file '$1' does not exist"
+	fi
 else
-	die "file '$1' does not exist"
+	mapfile -t
+	program=${MAPFILE[*]}
 fi
 
 program=${program//[^'><+-.,[]']}
