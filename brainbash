@@ -2,7 +2,7 @@
 
 die()
 {
-	printf '\e[31merror:\e[m %s\n' "$*" >&2
+	printf '\e[31merror:\e[m %s\n' "$@" >&2
 	exit 1
 }
 
@@ -43,7 +43,7 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 				input+=${MAPFILE[0]}
 			}
 
-			[[ -n ${MAPFILE[0]+x} ]] && {
+			[[ ${MAPFILE[0]+x} ]] && {
 				printf -v "tape[$ptr]" %d "'${input::1}"
 				input=${input#?}
 			}
