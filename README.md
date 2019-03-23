@@ -17,10 +17,10 @@ $ brainbash examples/numwarp.b
 ## Program Info
 
 - It reads from a file named in the first argument
-	- If there are no arguments, it reads from `/dev/tty`
+	- If there are no arguments, it reads from standard input
 - It only depends on Bash 4+ and is designed to be portable
 - It does not optimize on specific patterns
-- Unmatched brackets are only detected during runtime for speed
+- Unmatched brackets are detected during runtime
 
 ## Implementation Info
 
