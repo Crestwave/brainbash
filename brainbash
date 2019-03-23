@@ -6,16 +6,12 @@ die()
 	exit 1
 }
 
-if (( $# )); then
-	if [[ -e $1 ]]; then
-		program=$(<"$1")
-	else
-		die "file '$1' does not exist"
-	fi
+(( $# )) || set /dev/tty
+
+if [[ -e $1 ]]; then
+	program=$(<"$1")
 else
-	mapfile -t
-	program=${MAPFILE[*]}
-	[[ -c /dev/tty ]] && exec </dev/tty
+	die "file '$1' does not exist"
 fi
 
 program=${program//[^'><+-.,[]']}
@@ -73,4 +69,5 @@ for (( ptr = 0; index < ${#program}; index++ )); do
 			;;
 	esac
 done
+
 (( ${#stack[@]} )) && die "unmatched ["
