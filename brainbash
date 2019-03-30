@@ -10,7 +10,7 @@ if (( $# )); then
 	if [[ -e $1 ]]; then
 		program=$(<"$1")
 	else
-		die "file '$1' does not exist"
+		die "file $1 does not exist"
 	fi
 else
 	mapfile -t
