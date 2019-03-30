@@ -57,8 +57,8 @@ for (( ptr = 0; i < ${#program}; ++i )); do
 			else
 				for (( depth = 1; depth > 0 && ++i; )); do
 					case ${program:i:1} in
-						'[') (( depth++ )) ;;
-						']') (( depth-- )) ;;
+						'[') (( ++depth )) ;;
+						']') (( --depth )) ;;
 						'') die "unmatched [" ;;
 					esac
 				done
