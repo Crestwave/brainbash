@@ -8,7 +8,7 @@ die()
 
 if (( $# )); then
 	if [[ -e $1 ]]; then
-		program=$(<"$1")
+		program=$(< "$1")
 	else
 		die "file $1 does not exist"
 	fi
@@ -20,7 +20,7 @@ fi
 program=${program//[^'><+-.,[]']}
 declare -A tape
 
-for (( ptr = 0; i < ${#program}; ++i )); do
+for (( i = ptr = 0; i < ${#program}; ++i )); do
 	case ${program:i:1} in
 		'>')
 			(( ++ptr ))
