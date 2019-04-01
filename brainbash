@@ -65,11 +65,11 @@ for (( ptr = 0; i < ${#program}; ++i )); do
 			fi
 			;;
 		']')
-			(( ${#stack[@]} )) || die "unmatched ]"
+			: ${#stack[@]}
+			(( _ )) || die "unmatched ]"
 
-			: $(( ${#stack[@]} - 1 ))
-			(( tape['$ptr'] )) && (( i = stack[_] - 1 ))
-			unset 'stack[_]'
+			(( tape['$ptr'] )) && (( i = stack[_-1] - 1 ))
+			unset 'stack[_-1]'
 			;;
 	esac
 done
