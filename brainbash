@@ -73,4 +73,4 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 	esac
 done
 
-(( ${#stack[@]} )) && die "unmatched ["
+(( ${#stack[@]} == 0 )) || die "unmatched ["
