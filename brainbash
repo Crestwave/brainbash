@@ -37,8 +37,8 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			(( tape['$ptr'] < 0 )) && tape[$ptr]=255
 			;;
 		'.')
-			printf -v hex %x "${tape[$ptr]}"
-			printf %b "\x$hex"
+			printf -v f %x "${tape[$ptr]}"
+			printf %b "\x$f"
 			;;
 		',')
 			[[ -z $input ]] && {
@@ -47,7 +47,9 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			}
 
 			[[ ${MAPFILE[0]+x} ]] && {
-				printf -v 'tape[$ptr]' %d "'${input::1}"
+				printf -v f %d "'${input::1}"
+
+				tape[$ptr]=$f
 				input=${input:1}
 			}
 			;;
