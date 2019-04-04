@@ -1,8 +1,6 @@
-diff --git a/brainbash b/brainbash
-index 5cd7fe3..f53cd38 100755
---- a/brainbash
-+++ b/brainbash
-@@ -6,19 +6,8 @@ die()
+--- brainbash
++++ brainbash3
+@@ -6,19 +6,8 @@
  	exit 1
  }
  
@@ -23,7 +21,7 @@ index 5cd7fe3..f53cd38 100755
  
  for (( i = ptr = 0; i < ${#program}; ++i )); do
  	case ${program:i:1} in
-@@ -26,35 +15,35 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
+@@ -26,34 +15,34 @@
  			(( ++ptr ))
  			;;
  		'<')
@@ -58,7 +56,6 @@ index 5cd7fe3..f53cd38 100755
 -			[[ ${MAPFILE[0]+x} ]] && {
 +			[[ $REPLY ]] && {
  				printf -v f %d "'${input::1}"
- 
 -				tape[$ptr]=$f
 +				tape[ptr]=$f
  				input=${input:1}
@@ -70,7 +67,7 @@ index 5cd7fe3..f53cd38 100755
  				stack+=("$i")
  			else
  				for (( depth = 1; depth > 0 && ++i; )); do
-@@ -69,7 +58,7 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
+@@ -68,7 +57,7 @@
  		']')
  			(( _ = ${#stack[@]} )) || die "unmatched ]"
  

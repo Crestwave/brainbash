@@ -48,7 +48,6 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 
 			[[ ${MAPFILE[0]+x} ]] && {
 				printf -v f %d "'${input::1}"
-
 				tape[$ptr]=$f
 				input=${input:1}
 			}
