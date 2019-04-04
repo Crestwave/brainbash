@@ -1,0 +1,83 @@
+diff --git a/brainbash b/brainbash
+index 5cd7fe3..eab7f33 100755
+--- a/brainbash
++++ b/brainbash
+@@ -6,19 +6,8 @@ die()
+ 	exit 1
+ }
+ 
+-if (( $# )); then
+-	if [[ -e $1 ]]; then
+-		program=$(< "$1")
+-	else
+-		die "file '$1' does not exist"
+-	fi
+-else
+-	mapfile -t
+-	program=${MAPFILE[*]}
+-fi
+-
++program=$(< "${1:-/dev/stdin}")
+ program=${program//[^'><+-.,[]']}
+-declare -A tape
+ 
+ for (( i = ptr = 0; i < ${#program}; ++i )); do
+ 	case ${program:i:1} in
+@@ -26,35 +15,36 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
+ 			(( ++ptr ))
+ 			;;
+ 		'<')
+-			(( --ptr ))
++			(( ptr && --ptr ))
+ 			;;
+ 		'+')
+-			(( ++tape['$ptr'] ))
+-			(( tape['$ptr'] > 255 )) && tape[$ptr]=0
++			(( ++tape[ptr] ))
++			(( tape[ptr] > 255 )) && tape[ptr]=0
+ 			;;
+ 		'-')
+-			(( --tape['$ptr'] ))
+-			(( tape['$ptr'] < 0 )) && tape[$ptr]=255
++			(( --tape[ptr] ))
++			(( tape[ptr] < 0 )) && tape[ptr]=255
+ 			;;
+ 		'.')
+-			printf -v f %x "${tape[$ptr]}"
+-			printf %b "\x$f"
++			printf -v hex %x "${tape[ptr]}"
++			printf %b "\x$hex"
+ 			;;
+ 		',')
+ 			[[ -z $input ]] && {
+-				mapfile -n 1
+-				input+=${MAPFILE[0]}
++				read -r
++				(( $? )) || REPLY+=$'\n'
++				input+=$REPLY
+ 			}
+ 
+-			[[ ${MAPFILE[0]+x} ]] && {
++			[[ $REPLY ]] && {
+ 				printf -v f %d "'${input::1}"
+ 
+-				tape[$ptr]=$f
++				tape[ptr]=$f
+ 				input=${input:1}
+ 			}
+ 			;;
+ 		'[')
+-			if (( tape['$ptr'] )); then
++			if (( tape[ptr] )); then
+ 				stack+=("$i")
+ 			else
+ 				for (( depth = 1; depth > 0 && ++i; )); do
+@@ -69,7 +59,7 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
+ 		']')
+ 			(( _ = ${#stack[@]} )) || die "unmatched ]"
+ 
+-			(( tape['$ptr'] )) && (( i = stack[_-1] - 1 ))
++			(( tape[ptr] )) && (( i = stack[_-1] - 1 ))
+ 			unset 'stack[_-1]'
+ 			;;
+ 	esac
