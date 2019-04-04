@@ -44,7 +44,7 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			[[ -z $REPLY ]] && IFS=$'\n' read -r && REPLY+=$'\n'
 
 			[[ $REPLY ]] && {
-				printf -v f %d "'${REPLY::1}"
+				LC_CTYPE=C printf -v f %d "'${REPLY::1}"
 				tape[$ptr]=$f
 				REPLY=${REPLY:1}
 			}
