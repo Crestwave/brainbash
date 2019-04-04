@@ -14,7 +14,7 @@ if (( $# )); then
 	fi
 else
 	mapfile -t
-	program=${MAPFILE[*]}
+	program=${MAPFILE[@]}
 fi
 
 program=${program//[^'><+-.,[]']}
@@ -41,7 +41,7 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			printf %b "\x$f"
 			;;
 		',')
-			[[ -z $REPLY ]] && read -r && REPLY+=$'\n'
+			[[ -z $REPLY ]] && IFS=$'\n' read -r && REPLY+=$'\n'
 
 			[[ $REPLY ]] && {
 				printf -v f %d "'${REPLY::1}"
