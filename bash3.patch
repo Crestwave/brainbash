@@ -21,7 +21,7 @@
  
  for (( i = ptr = 0; i < ${#program}; ++i )); do
  	case ${program:i:1} in
-@@ -26,34 +15,34 @@
+@@ -26,18 +15,18 @@
  			(( ++ptr ))
  			;;
  		'<')
@@ -46,15 +46,9 @@
  			printf %b "\x$f"
  			;;
  		',')
- 			[[ -z $input ]] && {
--				mapfile -n 1
--				input+=${MAPFILE[0]}
-+				read -r && REPLY+=$'\n'
-+				input+=$REPLY
- 			}
+@@ -45,12 +34,12 @@
  
--			[[ ${MAPFILE[0]+x} ]] && {
-+			[[ $REPLY ]] && {
+ 			[[ $input ]] && {
  				printf -v f %d "'${input::1}"
 -				tape[$ptr]=$f
 +				tape[ptr]=$f
@@ -67,7 +61,7 @@
  				stack+=("$i")
  			else
  				for (( depth = 1; depth > 0 && ++i; )); do
-@@ -68,7 +57,7 @@
+@@ -65,7 +54,7 @@
  		']')
  			(( _ = ${#stack[@]} )) || die "unmatched ]"
  

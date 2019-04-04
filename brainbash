@@ -41,12 +41,9 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			printf %b "\x$f"
 			;;
 		',')
-			[[ -z $input ]] && {
-				mapfile -n 1
-				input+=${MAPFILE[0]}
-			}
+			[[ -z $input ]] && read -r input && input+=$'\n'
 
-			[[ ${MAPFILE[0]+x} ]] && {
+			[[ $input ]] && {
 				printf -v f %d "'${input::1}"
 				tape[$ptr]=$f
 				input=${input:1}
