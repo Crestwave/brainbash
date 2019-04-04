@@ -1,5 +1,5 @@
---- brainbash
-+++ brainbash3
+--- brainbash	2019-04-04 16:49:47.758549174 +0800
++++ brainbash3	2019-04-04 16:50:48.469553537 +0800
 @@ -6,19 +6,8 @@
  	exit 1
  }
@@ -48,11 +48,11 @@
  		',')
 @@ -45,12 +34,12 @@
  
- 			[[ $input ]] && {
- 				printf -v f %d "'${input::1}"
+ 			[[ $REPLY ]] && {
+ 				printf -v f %d "'${REPLY::1}"
 -				tape[$ptr]=$f
 +				tape[ptr]=$f
- 				input=${input:1}
+ 				REPLY=${REPLY:1}
  			}
  			;;
  		'[')

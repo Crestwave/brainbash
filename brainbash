@@ -41,12 +41,12 @@ for (( i = ptr = 0; i < ${#program}; ++i )); do
 			printf %b "\x$f"
 			;;
 		',')
-			[[ -z $input ]] && read -r input && input+=$'\n'
+			[[ -z $REPLY ]] && read -r && REPLY+=$'\n'
 
-			[[ $input ]] && {
-				printf -v f %d "'${input::1}"
+			[[ $REPLY ]] && {
+				printf -v f %d "'${REPLY::1}"
 				tape[$ptr]=$f
-				input=${input:1}
+				REPLY=${REPLY:1}
 			}
 			;;
 		'[')
