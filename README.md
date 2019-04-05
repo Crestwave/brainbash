@@ -29,6 +29,6 @@ $ brainbash examples/numwarp.b
 
 - Cells wrap on 8-bit overflow and underflow
 - The cell is left unchanged on EOF
-- The host's native character set is used (untested)
 - Negative pointers are allowed
 - Input is line buffered
+- Output is encoded in ASCII
