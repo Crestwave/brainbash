@@ -31,4 +31,4 @@ $ brainbash examples/numwarp.b
 - The cell is left unchanged on EOF
 - Negative pointers are allowed
 - Input is line buffered
-- Output is encoded in ASCII
+- Output is ASCII-encoded
